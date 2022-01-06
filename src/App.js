@@ -1,6 +1,6 @@
-import * as React from "react";
-import { ethers } from "ethers";
-import './App.css';
+import * as React from "react"
+import { ethers } from "ethers"
+import './App.css'
 
 export default function App() {
 
@@ -13,11 +13,16 @@ export default function App() {
 
       <div className="dataContainer">
         <div className="header">
-        👋 Hey there!
+        <span role='img' aria-label="emoji-wave">👋</span> Hey there!
         </div>
 
+        <img src="profile_pic.png" alt="profile"/>
+
         <div className="bio">
-        I am farza and I worked on self-driving cars so that's pretty cool right? Connect your Ethereum wallet and wave at me!
+        I am Victoria and I'm a coral reef ecologist &amp; a software developer, trying to combine my passion for the two!
+        <br/>
+        <br/>
+        Connect your Ethereum wallet and wave at me!
         </div>
 
         <button className="waveButton" onClick={wave}>
@@ -25,5 +30,5 @@ export default function App() {
         </button>
       </div>
     </div>
-  );
+  )
 }
