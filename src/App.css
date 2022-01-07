@@ -16,12 +16,20 @@
   text-align: center;
   font-size: 32px;
   font-weight: 600;
+  color: #FFFFFF;
 }
 
 .bio {
   text-align: center;
-  color: gray;
+  color: #FFFFFF;
   margin-top: 16px;
+  margin-bottom: 16px;
+  font-size: larger;
+  font-weight: 400;
+}
+
+.buttonContainer {
+  text-align: center;
 }
 
 .waveButton {
@@ -30,5 +38,13 @@
   padding: 8px;
   border: 0;
   border-radius: 5px;
-  
+  width: 25%;
+  background-color: #734ae8;
+  background-image: linear-gradient(315deg, #734ae8 0%, #89d4cf 74%);
+  color: #121212;
+  font-size: large;
+}
+
+.waveButton:hover {
+  opacity: 0.4;
 }
