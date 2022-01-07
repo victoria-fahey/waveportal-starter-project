@@ -19,7 +19,7 @@ export default function App() {
         <img src="profile_pic.png" alt="profile"/>
 
         <div className="bio">
-        I am Victoria and I'm a coral reef ecologist &amp; a software developer, trying to combine my passion for the two!
+        I am Victoria and I'm a coral reef ecologist &amp; a software developer, trying to combine my passion for the two, while delving into the world of web3!
         <br/>
         <br/>
         Connect your Ethereum wallet and wave at me!
