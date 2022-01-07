@@ -1,5 +1,9 @@
 # buildspace Wave Portal 👋 
 
+Check out my wave portal site here: 
+
+https://victoria-waveportal-project.netlify.app/
+
 ### **Welcome!**
 To get started with this course, clone this repo and follow these commands:
 
