@@ -77,8 +77,10 @@ export default function App () {
           <button className="waveButton" onClick={wave}>
             Wave at Me
           </button>
-
-          {/* if we don't have connected wallet show this button */}
+        </div>
+        
+        {/* if we don't have connected wallet show this button */}
+        <div className='buttonContainer'>
           {!currentAccount && (
             <button className='waveButton' onClick={connectWallet}>
               Connect Wallet
