@@ -1,16 +1,49 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 // import { ethers } from "ethers"
 import './App.css'
 
 export default function App () {
-    // makes sure we have access to window.ethereum
-    const checkIfWalletIsConnected = () => {
-    const { ethereum } = window
+  // store user's public wallet
+  const [currentAccount, setCurrentAccount] = useState('')
 
-    if (!ethereum) {
-      console.log("Make sure you have metamask!")
-    } else {
-      console.log("We have the ethereum object", ethereum)
+  // makes sure we have access to window.ethereum
+  const checkIfWalletIsConnected = async () => {
+    try {
+      const { ethereum } = window
+      if (!ethereum) {
+        console.log("Make sure you have metamask!")
+      } else {
+        console.log("We have the ethereum object", ethereum)
+      }
+      // check if we're authorised to access user's wallet 
+      const accounts = await ethereum.request({ method: 'eth_accounts' })
+
+      if (accounts.length !== 0) {
+        const account = accounts[0]
+        console.log('Found an authorised account:', account)
+        setCurrentAccount(account)
+      } else {
+        console.log('No authorised accound found')
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const connectWallet = async () => {
+    try {
+      const { ethereum } = window
+
+      if (!ethereum) {
+        alert('Get MetaMask!')
+        return 
+      }
+
+      const accounts = await ethereum.request({method: 'eth_requestAccounts'})
+      console.log('Connected', accounts[0])
+      setCurrentAccount(accounts[0])
+    } catch (error) {
+      console.log(error)
     }
   }
 
@@ -42,8 +75,15 @@ export default function App () {
 
         <div className="buttonContainer">
           <button className="waveButton" onClick={wave}>
-          Wave at Me
+            Wave at Me
           </button>
+
+          {/* if we don't have connected wallet show this button */}
+          {!currentAccount && (
+            <button className='waveButton' onClick={connectWallet}>
+              Connect Wallet
+            </button>
+          )}
         </div>
       </div>
     </div>
