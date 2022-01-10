@@ -16,12 +16,12 @@
   text-align: center;
   font-size: 32px;
   font-weight: 600;
-  color: #FFFFFF;
+  color: #ffffff;
 }
 
 .bio {
   text-align: center;
-  color: #FFFFFF;
+  color: #ffffff;
   margin-top: 16px;
   margin-bottom: 16px;
   font-size: larger;
@@ -46,5 +46,22 @@
 }
 
 .waveButton:hover {
+  opacity: 0.4;
+}
+
+.walletButton {
+  cursor: pointer;
+  margin-top: 16px;
+  padding: 8px;
+  border: 0;
+  border-radius: 5px;
+  width: 25%;
+  background-color: #f7b42c;
+  background-image: linear-gradient(315deg, #f7b42c 0%, #fc575e 74%);
+  color: #121212;
+  font-size: large;
+}
+
+.walletButton:hover {
   opacity: 0.4;
 }
