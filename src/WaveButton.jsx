@@ -1,4 +1,5 @@
 import React from 'react'
+import './App.css'
 import { ethers } from 'ethers'
 import contract from './utils/WavePortal.json'
 
