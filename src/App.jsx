@@ -81,12 +81,11 @@ export default function App (props) {
 
         {isMining ? 
           <div className='buttonContainer'>
-            <ClimbingBoxLoader 
-              color='orange'
-              css={{marginTop: '16px'}} />
-            <br/>
-            <br/>
             <p className='bio'>mining in progres...</p>
+            <br/>
+            <br/>
+            <ClimbingBoxLoader 
+              color='orange' />
           </div> :
           <WaveButton setIsMining={setIsMining} waveCount={waveCount} setWaveCount={setWaveCount} />
         }
