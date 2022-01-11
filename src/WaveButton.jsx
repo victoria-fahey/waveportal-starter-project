@@ -4,7 +4,7 @@ import { ethers } from 'ethers'
 import contract from './utils/WavePortal.json'
 
 function WaveButton (props) {
-    const contractAddress = '0x845D21831fbBC055C1aEAf8B7b3d5f0DB05eB82A'
+    const contractAddress = '0x8B970933594fD7aDCfe12D833FBFC50d055887a3'
     const contractABI = contract.abi
     const { setIsMining } = props
     const { waveCount } = props
