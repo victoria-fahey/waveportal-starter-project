@@ -3,7 +3,7 @@ import './App.css'
 import { ClimbingBoxLoader } from 'react-spinners'
 import WaveButton from './WaveButton'
 
-export default function App () {
+export default function App (props) {
   const [currentAccount, setCurrentAccount] = useState('')
   const [isMining, setIsMining] = useState(false)
   const [waveCount, setWaveCount] = useState(0)
@@ -52,7 +52,6 @@ export default function App () {
   // runs our function when the page loads 
   useEffect(() => {
     checkIfWalletIsConnected()
-    setIsMining(false)
   }, [])
 
   return (

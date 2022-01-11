@@ -20,17 +20,21 @@ function WaveButton (props) {
             const provider = new ethers.providers.Web3Provider(ethereum)
             const signer = provider.getSigner()
             const wavePortalContract = new ethers.Contract(contractAddress, contractABI, signer)
+
             let count = await wavePortalContract.getTotalWaves()
             console.log('Retrieved total wave count...', count.toNumber())
     
             // execute the actual wave from smart contract 
             const waveTxn = await wavePortalContract.wave()
             console.log('Mining...', waveTxn.hash)
+
             await waveTxn.wait()
             setIsMining(false)
             console.log('Mined --', waveTxn.hash)
+
             count = await wavePortalContract.getTotalWaves()
             console.log('Retrieved total wave count...', count.toNumber())
+
             setWaveCount(count.toNumber())
           } else {
             console.log("Ethereum object doesn't exist")
