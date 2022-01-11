@@ -65,3 +65,7 @@
 .walletButton:hover {
   opacity: 0.4;
 }
+
+.loaderIcon {
+  color: #f5a623;
+}

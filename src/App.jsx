@@ -2,11 +2,14 @@ import React, { useEffect, useState } from 'react'
 import { ethers } from "ethers"
 import './App.css'
 import contract from './utils/WavePortal.json'
+import { ClimbingBoxLoader } from 'react-spinners'
 
 export default function App () {
   const [currentAccount, setCurrentAccount] = useState('')
   const contractAddress = '0x845D21831fbBC055C1aEAf8B7b3d5f0DB05eB82A'
   const contractABI = contract.abi
+  const [isMining, setIsMining] = useState(false)
+  const [waveCount, setWaveCount] = useState(0)
 
   // makes sure we have access to window.ethereum
   const checkIfWalletIsConnected = async () => {
@@ -25,7 +28,7 @@ export default function App () {
         console.log('Found an authorised account:', account)
         setCurrentAccount(account)
       } else {
-        console.log('No authorised accound found')
+        console.log('No authorised account found')
       }
     } catch (error) {
       console.log(error)
@@ -63,10 +66,13 @@ export default function App () {
         // execute the actual wave from smart contract 
         const waveTxn = await wavePortalContract.wave()
         console.log('Mining...', waveTxn.hash)
+        setIsMining(true)
         await waveTxn.wait()
         console.log('Mined --', waveTxn.hash)
+        setIsMining(false)
         count = await wavePortalContract.getTotalWaves()
         console.log('Retrieved total wave count...', count.toNumber())
+        setWaveCount(count.toNumber())
       } else {
         console.log("Ethereum object doesn't exist")
       }
@@ -75,14 +81,18 @@ export default function App () {
     }
   }
 
+  function getInitialWaveCount() {
+
+  }
+
   // runs our function when the page loads 
   useEffect(() => {
     checkIfWalletIsConnected()
+    setIsMining(false)
   }, [])
 
   return (
     <div className="mainContainer">
-
       <div className="dataContainer">
         <div className="header">
           <span role='img' aria-label="emoji-wave">👋</span> Hey there!
@@ -91,10 +101,10 @@ export default function App () {
         <img src="profile_pic.png" alt="profile"/>
 
         <div className="bio">
-        I am Victoria and I&apos;m a coral reef ecologist &amp; a software developer, trying to combine my passion for the two, while delving into the world of web3!
+          I am Victoria and I&apos;m a coral reef ecologist &amp; a software developer, trying to combine my passion for the two, while delving into the world of web3!
           <br/>
           <br/>
-        Connect your Ethereum wallet and wave at me!
+          Connect your Ethereum wallet and wave at me!
         </div>
 
         <div className="buttonContainer">
@@ -111,6 +121,14 @@ export default function App () {
             </button>
           )}
         </div>
+ 
+          <div className='header'>
+            <p>Total <span role='img' aria-label="emoji-wave">👋</span> : {waveCount} </p>
+          </div>
+
+          <div className='buttonContainer'>
+            <ClimbingBoxLoader color='orange' />
+          </div>
       </div>
     </div>
   )
