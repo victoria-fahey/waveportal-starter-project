@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { ethers } from "ethers"
 import './App.css'
-import contract from './utils/WavePortal.json'
 import { ClimbingBoxLoader } from 'react-spinners'
+import WaveButton from './WaveButton'
 
 export default function App () {
   const [currentAccount, setCurrentAccount] = useState('')
-  const contractAddress = '0x845D21831fbBC055C1aEAf8B7b3d5f0DB05eB82A'
-  const contractABI = contract.abi
   const [isMining, setIsMining] = useState(false)
   const [waveCount, setWaveCount] = useState(0)
 
@@ -52,39 +49,6 @@ export default function App () {
     }
   }
 
-  const wave = async () => {
-    try {
-      const { ethereum } = window 
-      
-      if (ethereum) {
-        const provider = new ethers.providers.Web3Provider(ethereum)
-        const signer = provider.getSigner()
-        const wavePortalContract = new ethers.Contract(contractAddress, contractABI, signer)
-        let count = await wavePortalContract.getTotalWaves()
-        console.log('Retrieved total wave count...', count.toNumber())
-
-        // execute the actual wave from smart contract 
-        const waveTxn = await wavePortalContract.wave()
-        console.log('Mining...', waveTxn.hash)
-        setIsMining(true)
-        await waveTxn.wait()
-        console.log('Mined --', waveTxn.hash)
-        setIsMining(false)
-        count = await wavePortalContract.getTotalWaves()
-        console.log('Retrieved total wave count...', count.toNumber())
-        setWaveCount(count.toNumber())
-      } else {
-        console.log("Ethereum object doesn't exist")
-      }
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
-  function getInitialWaveCount() {
-
-  }
-
   // runs our function when the page loads 
   useEffect(() => {
     checkIfWalletIsConnected()
@@ -106,12 +70,6 @@ export default function App () {
           <br/>
           Connect your Ethereum wallet and wave at me!
         </div>
-
-        <div className="buttonContainer">
-          <button className="waveButton" onClick={wave}>
-            Wave at Me
-          </button>
-        </div>
         
         {/* if we don't have connected wallet show this button */}
         <div className='buttonContainer'>
@@ -121,14 +79,18 @@ export default function App () {
             </button>
           )}
         </div>
- 
-          <div className='header'>
-            <p>Total <span role='img' aria-label="emoji-wave">👋</span> : {waveCount} </p>
-          </div>
 
+        {isMining ? 
           <div className='buttonContainer'>
-            <ClimbingBoxLoader color='orange' />
-          </div>
+            <ClimbingBoxLoader 
+              color='orange'
+              css={{marginTop: '16px'}} />
+            <br/>
+            <br/>
+            <p className='bio'>mining in progres...</p>
+          </div> :
+          <WaveButton setIsMining={setIsMining} waveCount={waveCount} setWaveCount={setWaveCount} />
+        }
       </div>
     </div>
   )
