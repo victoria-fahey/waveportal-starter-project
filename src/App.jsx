@@ -6,12 +6,13 @@ import { ClimbingBoxLoader } from 'react-spinners'
 import contract from './utils/WavePortal.json'
 
 export default function App (props) {
-  const [currentAccount, setCurrentAccount] = useState('')
-  const [isMining, setIsMining] = useState(false)
-  const [waveCount, setWaveCount] = useState(0)
-  const [allWaves, setAllWaves] = useState([])
   const contractAddress = '0x8B970933594fD7aDCfe12D833FBFC50d055887a3'
   const contractABI = contract.abi
+  const [currentAccount, setCurrentAccount] = useState('')
+  const [isMining, setIsMining] = useState(false)
+  // const [waveCount, setWaveCount] = useState(0)
+  const [allWaves, setAllWaves] = useState([])
+  const [message, setMessage] = useState('')
 
   // makes sure we have access to window.ethereum
   const checkIfWalletIsConnected = async () => {
@@ -56,8 +57,6 @@ export default function App (props) {
   }
 
   const wave = async () => {
-    setIsMining(true)
-
     try {
       const { ethereum } = window 
       
@@ -66,11 +65,13 @@ export default function App (props) {
         const signer = provider.getSigner()
         const wavePortalContract = new ethers.Contract(contractAddress, contractABI, signer)
 
+        setIsMining(true)
+
         let count = await wavePortalContract.getTotalWaves()
         console.log('Retrieved total wave count...', count.toNumber())
 
         // execute the actual wave from smart contract 
-        const waveTxn = await wavePortalContract.wave('this is a message!')
+        const waveTxn = await wavePortalContract.wave(message)
         console.log('Mining...', waveTxn.hash)
 
         await waveTxn.wait()
@@ -81,7 +82,9 @@ export default function App (props) {
         console.log('Retrieved total wave count...', count.toNumber())
         // setWaveCount(allWaves.length)
       } else {
-        console.log("Ethereum object doesn't exist")
+        alert('Get MetaMask!')
+        return 
+        // console.log("Ethereum object doesn't exist")
       }
     } catch (error) {
       console.log(error)
