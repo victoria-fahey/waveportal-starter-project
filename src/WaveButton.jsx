@@ -25,7 +25,7 @@ function WaveButton (props) {
             console.log('Retrieved total wave count...', count.toNumber())
     
             // execute the actual wave from smart contract 
-            const waveTxn = await wavePortalContract.wave()
+            const waveTxn = await wavePortalContract.wave('this is a message!')
             console.log('Mining...', waveTxn.hash)
 
             await waveTxn.wait()

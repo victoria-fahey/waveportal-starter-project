@@ -65,3 +65,14 @@
 .walletButton:hover {
   opacity: 0.4;
 }
+
+.messages {
+  text-align: center;
+  color: #121212;
+  background-color: #616d7e;
+  margin-top: 16px;
+  margin-bottom: 16px;
+  padding: 8px;
+  font-size: medium;
+  font-weight: 400;
+}

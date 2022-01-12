@@ -1,12 +1,18 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react'
 import './App.css'
+import { ethers } from 'ethers'
 import { ClimbingBoxLoader } from 'react-spinners'
 import WaveButton from './WaveButton'
+import contract from './utils/WavePortal.json'
 
 export default function App (props) {
   const [currentAccount, setCurrentAccount] = useState('')
   const [isMining, setIsMining] = useState(false)
   const [waveCount, setWaveCount] = useState(0)
+  const [allWaves, setAllWaves] = useState([])
+  const contractAddress = '0x8B970933594fD7aDCfe12D833FBFC50d055887a3'
+  const contractABI = contract.abi
 
   // makes sure we have access to window.ethereum
   const checkIfWalletIsConnected = async () => {
@@ -24,6 +30,7 @@ export default function App (props) {
         const account = accounts[0]
         console.log('Found an authorised account:', account)
         setCurrentAccount(account)
+        getAllWaves()
       } else {
         console.log('No authorised account found')
       }
@@ -48,6 +55,41 @@ export default function App (props) {
       console.log(error)
     }
   }
+
+  const getAllWaves = async () => {
+    try {
+      const { ethereum } = window
+
+      if (ethereum) {
+        const provider = new ethers.providers.Web3Provider(ethereum)
+        const signer = provider.getSigner()
+        const wavePortalContract = new ethers.Contract(contractAddress, contractABI, signer)
+
+        // call getAllWaves from smart contract
+        const waves = await wavePortalContract.getAllWaves()
+
+        // tidy waves array
+        let wavesCleaned = []
+        waves.forEach(wave => {
+          wavesCleaned.push({
+            address: wave.waver,
+            timestamp: new Date(wave.timestamp * 1000),
+            message: wave.message
+          })
+        })
+      
+        console.log(waves)
+        // store our data in React state 
+        setAllWaves(wavesCleaned)
+      } else {
+        console.log("Ethereum object doesn't exist!")
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  console.log(allWaves)
 
   // runs our function when the page loads 
   useEffect(() => {
@@ -89,6 +131,16 @@ export default function App (props) {
           </div> :
           <WaveButton setIsMining={setIsMining} waveCount={waveCount} setWaveCount={setWaveCount} />
         }
+
+        {allWaves.map((wave, index) => {
+          return (
+            <div key={index} className='messages'>
+              <p><strong>Address:</strong> {wave.address} </p>
+              <p><strong>Time:</strong> {wave.timestamp.toString()} </p>
+              <p><strong>Message:</strong> {wave.message}</p>
+            </div>
+          )
+        })}
       </div>
     </div>
   )
