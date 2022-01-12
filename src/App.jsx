@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react'
 import './App.css'
 import { ethers } from 'ethers'
 import { ClimbingBoxLoader } from 'react-spinners'
-import WaveButton from './WaveButton'
 import contract from './utils/WavePortal.json'
 
 export default function App (props) {
@@ -56,6 +55,39 @@ export default function App (props) {
     }
   }
 
+  const wave = async () => {
+    setIsMining(true)
+
+    try {
+      const { ethereum } = window 
+      
+      if (ethereum) {
+        const provider = new ethers.providers.Web3Provider(ethereum)
+        const signer = provider.getSigner()
+        const wavePortalContract = new ethers.Contract(contractAddress, contractABI, signer)
+
+        let count = await wavePortalContract.getTotalWaves()
+        console.log('Retrieved total wave count...', count.toNumber())
+
+        // execute the actual wave from smart contract 
+        const waveTxn = await wavePortalContract.wave('this is a message!')
+        console.log('Mining...', waveTxn.hash)
+
+        await waveTxn.wait()
+        setIsMining(false)
+        console.log('Mined --', waveTxn.hash)
+
+        count = await wavePortalContract.getTotalWaves()
+        console.log('Retrieved total wave count...', count.toNumber())
+        // setWaveCount(allWaves.length)
+      } else {
+        console.log("Ethereum object doesn't exist")
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }  
+
   const getAllWaves = async () => {
     try {
       const { ethereum } = window
@@ -76,9 +108,7 @@ export default function App (props) {
             timestamp: new Date(wave.timestamp * 1000),
             message: wave.message
           })
-        })
-      
-        console.log(waves)
+        }) 
         // store our data in React state 
         setAllWaves(wavesCleaned)
       } else {
@@ -88,8 +118,6 @@ export default function App (props) {
       console.log(error)
     }
   }
-
-  console.log(allWaves)
 
   // runs our function when the page loads 
   useEffect(() => {
@@ -129,8 +157,16 @@ export default function App (props) {
             <ClimbingBoxLoader 
               color='orange' />
           </div> :
-          <WaveButton setIsMining={setIsMining} waveCount={waveCount} setWaveCount={setWaveCount} />
+          <div className="buttonContainer">
+            <button className="waveButton" onClick={wave}>
+            Wave at Me
+            </button>
+          </div>          
         }
+
+        <div className='header'>
+          <p>Total <span role='img' aria-label="emoji-wave">👋</span> : {allWaves.length} </p>
+        </div>
 
         {allWaves.map((wave, index) => {
           return (
