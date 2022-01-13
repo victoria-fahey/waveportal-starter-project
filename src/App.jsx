@@ -160,12 +160,19 @@ export default function App (props) {
             <ClimbingBoxLoader 
               color='orange' />
           </div> :
-          <div className="buttonContainer">
+          <div className='buttonContainer'>
             <button className="waveButton" onClick={wave}>
             Wave at Me
             </button>
           </div>          
         }
+
+        <form className='formContainer'>
+          <label>Write message:{' '} 
+            <input type='text' value={message} onChange={e => setMessage(e.target.value)} />
+          </label>
+          <input type='submit' value='submit' />
+        </form>
 
         <div className='header'>
           <p>Total <span role='img' aria-label="emoji-wave">👋</span> : {allWaves.length} </p>
