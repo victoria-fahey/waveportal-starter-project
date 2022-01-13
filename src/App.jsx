@@ -6,7 +6,7 @@ import { ClimbingBoxLoader } from 'react-spinners'
 import contract from './utils/WavePortal.json'
 
 export default function App (props) {
-  const contractAddress = '0x8B970933594fD7aDCfe12D833FBFC50d055887a3'
+  const contractAddress = '0x6f5E486Bc94A6315508845cE1Fd49C9D298cbE47'
   const contractABI = contract.abi
   const [currentAccount, setCurrentAccount] = useState('')
   const [isMining, setIsMining] = useState(false)
