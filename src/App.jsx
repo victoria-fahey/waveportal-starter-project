@@ -71,7 +71,7 @@ export default function App (props) {
         console.log('Retrieved total wave count...', count.toNumber())
 
         // execute the actual wave from smart contract 
-        const waveTxn = await wavePortalContract.wave(message)
+        const waveTxn = await wavePortalContract.wave(message, { gasLimit: 300000 })
         console.log('Mining...', waveTxn.hash)
 
         await waveTxn.wait()
